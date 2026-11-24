@@ -1,0 +1,65 @@
+name: Update screenings
+
+on:
+  schedule:
+    # 7:23am and 3:23pm New York time in winter (8:23am / 4:23pm in summer). GitHub cron runs in UTC.
+    - cron: "23 12,20 * * *"
+  workflow_dispatch:        # adds a "Run workflow" button on the Actions tab
+  push:
+    branches: [main]
+    paths: ["site/index.html", "collector/**", ".github/workflows/**"]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  issues: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install
+        run: |
+          pip install -r requirements.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Collect screenings
+        env:
+          PREVIOUS: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/data.json
+        run: python collector/collect.py --previous "$PREVIOUS"
+
+      - name: Alert on problems (opens or updates an issue, which emails you)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh label create collector-alert --color d73a4a --description "Screenings collector problem" --force >/dev/null 2>&1 || true
+          open=$(gh issue list --label collector-alert --state open --json number --jq '.[0].number')
+          if [ -f alerts.md ]; then
+            if [ -n "$open" ]; then gh issue comment "$open" --body-file alerts.md
+            else gh issue create --title "Screenings collector: a theater needs attention" --label collector-alert --body-file alerts.md; fi
+          elif [ -n "$open" ]; then
+            gh issue close "$open" --comment "Latest run collected every theater successfully. Closing."
+          fi
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deploy
+        uses: actions/deploy-pages@v4
