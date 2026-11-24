@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NYC Repertory Screenings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE everyday tool for a cinephile: dense, quick to scan, a little showbiz
+   IDEA a theater marquee over a printed repertory calendar
+   PICTURE the schedule itself; a slim marquee band carries the title
+   COLOUR screen red #c8231b band, white/near-black ground, 35mm red, 70mm indigo, 16mm green
+   TYPE Big Shoulders Display (marquee lettering) + Archivo
+   LAYOUT slim red band (title, counts), sticky filter bar with dates, start-time slider, theaters, formats, then days: big date column left, theaters right; phone stacks */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#141112);--ink:light-dark(#17120f,#f3ece8);--mute:light-dark(#6f6661,#a89d97);--rule:light-dark(#ebe4df,#2d2627);--card:light-dark(#faf7f5,#1d191a);--red:#c8231b;--red2:#a51b14;--c35:light-dark(#c8231b,#ff6a5f);--c70:light-dark(#2b2a8c,#9d9cff);--c16:light-dark(#1e7a4c,#5fd39a);--pill:light-dark(#f2ece8,#2a2425)}
+:root[data-theme=light]{color-scheme:light}
+:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:150px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Archivo,system-ui,sans-serif;overflow-x:clip}
+a{color:inherit}
+button{font:inherit;color:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:0 max(4vw,16px)}
+.band{background:var(--red);color:#fff;padding:22px 0 20px}
+.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:8px 24px}
+h1{font:800 clamp(40px,6vw,64px)/.95 "Big Shoulders Display",Impact,sans-serif;letter-spacing:.01em;margin:0;text-transform:uppercase}
+.sum{font-size:15px;opacity:.92;text-align:right}
+.sum b{font-weight:700}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--rule);box-shadow:0 6px 12px -10px rgba(0,0,0,.35)}
+.bar .wrap{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding-top:10px;padding-bottom:10px}
+.days{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex:1 1 420px;padding:2px}
+.days::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--rule);background:var(--bg);border-radius:10px;padding:5px 10px;cursor:pointer;text-align:center;line-height:1.15;min-height:44px}
+.chip small{display:block;font-size:12px;color:var(--mute)}
+.chip b{font:700 18px/1 "Big Shoulders Display",sans-serif}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip[aria-pressed=true] small{color:inherit;opacity:.75}
+.chip.all{display:flex;align-items:center;font-weight:600;font-size:14px}
+.grp{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+#fmts{display:contents}
+.fmt{border:1px solid var(--rule);background:var(--bg);border-radius:999px;padding:7px 12px;font-size:14px;cursor:pointer;min-height:38px;display:inline-flex;align-items:center;gap:6px}
+.fmt i{width:9px;height:9px;border-radius:50%;background:var(--mute)}
+.fmt[aria-pressed=true]{background:var(--pill);border-color:var(--ink);font-weight:600}
+.dd{position:relative;flex:none}
+.ddb{border:1px solid var(--ink);background:var(--bg);border-radius:999px;padding:7px 14px;font-size:14px;font-weight:600;cursor:pointer;min-height:38px;white-space:nowrap}
+.panel{position:absolute;top:calc(100% + 6px);left:0;z-index:10;background:var(--bg);border:1px solid var(--rule);border-radius:12px;padding:10px;width:290px;box-shadow:0 14px 30px -12px rgba(0,0,0,.4)}
+.panel[hidden]{display:none}
+.panel label{display:flex;gap:10px;align-items:center;padding:7px 6px;border-radius:8px;cursor:pointer;font-size:15px}
+.panel label:hover{background:var(--pill)}
+.panel label small{color:var(--mute);margin-left:auto;font-size:13px}
+.panel input{width:18px;height:18px;accent-color:var(--red)}
+.panel .acts{display:flex;gap:8px;border-top:1px solid var(--rule);margin-top:6px;padding-top:8px}
+.panel .acts button{flex:1;border:1px solid var(--rule);background:none;border-radius:8px;padding:8px;cursor:pointer;font-size:14px}
+.time{display:flex;align-items:center;gap:12px;flex:1 1 300px;min-width:260px}
+.time label{font-size:14px;line-height:1.2;white-space:nowrap}
+.time label b{display:block;font-size:15px;font-variant-numeric:tabular-nums}
+.sl{position:relative;flex:1;height:44px;min-width:150px}
+.sl .track{position:absolute;left:11px;right:11px;top:20px;height:4px;border-radius:2px;background:var(--rule)}
+.sl .fill{position:absolute;top:0;bottom:0;background:var(--red);border-radius:2px}
+.sl input{position:absolute;inset:0;width:100%;height:44px;margin:0;background:transparent;pointer-events:none;-webkit-appearance:none;appearance:none}
+.sl input::-webkit-slider-runnable-track{background:transparent;height:44px}
+.sl input::-moz-range-track{background:transparent}
+.sl input::-webkit-slider-thumb{-webkit-appearance:none;pointer-events:auto;width:22px;height:22px;margin-top:11px;border-radius:50%;background:var(--bg);border:3px solid var(--red);cursor:grab;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.sl input::-moz-range-thumb{pointer-events:auto;width:16px;height:16px;border-radius:50%;background:var(--bg);border:3px solid var(--red);cursor:grab}
+.sl input:focus-visible::-webkit-slider-thumb{outline:3px solid var(--c70);outline-offset:2px}
+.reset{background:none;border:0;color:var(--mute);text-decoration:underline;cursor:pointer;font-size:14px;padding:8px 4px}
+main{padding-bottom:40px}
+.day{display:grid;grid-template-columns:150px minmax(0,1fr);gap:28px;padding:30px 0 10px;border-bottom:1px solid var(--rule)}
+.dh{position:sticky;top:96px;align-self:start}
+.dh .wd{font:700 22px/1 "Big Shoulders Display",sans-serif;text-transform:uppercase;color:var(--red);letter-spacing:.02em}
+.dh .n{font:800 84px/.85 "Big Shoulders Display",sans-serif}
+.dh .m{font-size:14px;color:var(--mute);margin-top:4px}
+.ths{columns:2 340px;column-gap:16px}
+.th{break-inside:avoid;margin-bottom:16px;background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:14px 16px 6px}
+.th h3{margin:0 0 4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;font:800 22px/1.05 "Big Shoulders Display",sans-serif;text-transform:uppercase;letter-spacing:.01em}
+.th h3 a{text-decoration:none}
+.th h3 a:hover{color:var(--red)}
+.th h3 span{font:400 13px Archivo,sans-serif;color:var(--mute);text-transform:none;letter-spacing:0}
+.film{padding:10px 0;border-top:1px solid var(--rule)}
+.th h3+.film{border-top:0}
+.ft{font-weight:600;font-size:16px;line-height:1.3;text-decoration:none}
+.ft:hover{text-decoration:underline;text-decoration-color:var(--red);text-underline-offset:3px}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-radius:4px;padding:2px 6px;margin-left:6px;vertical-align:2px;background:var(--pill);color:var(--mute);white-space:nowrap}
+.tag.f35{background:var(--c35);color:var(--bg)}
+.tag.f70{background:var(--c70);color:var(--bg)}
+.tag.f16{background:var(--c16);color:var(--bg)}
+.note{font-size:13px;color:var(--mute);margin-top:2px}
+.times{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.times span{font-size:14px;font-weight:500;background:var(--pill);border-radius:6px;padding:3px 8px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.times sup{font-size:10px;color:var(--mute);margin-left:2px}
+.times em{font-size:13px;color:var(--mute)}
+.stale{font-size:13px;color:var(--c35);margin:2px 0 6px}
+.closed{font-size:14px;color:var(--mute);font-style:italic;padding:6px 0 12px}
+.empty{padding:60px 0;text-align:center;color:var(--mute)}
+.empty b{display:block;font:800 34px "Big Shoulders Display",sans-serif;color:var(--ink);text-transform:uppercase}
+footer{border-top:1px solid var(--rule);padding:22px 0 40px;font-size:14px;color:var(--mute)}
+footer p{margin:4px 0;max-width:75ch}
+@media(max-width:760px){.bar{position:static;box-shadow:none}.grp{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;width:100%}.fmt,.ddb,.reset{flex:none}.panel{position:fixed;left:16px;right:16px;top:auto;width:auto;max-height:70vh;overflow:auto}.dh{top:0}.day{grid-template-columns:1fr;gap:12px}.dh{position:static;display:flex;align-items:baseline;gap:10px}.dh .n{font-size:48px}.sum{text-align:left}html{scroll-padding-top:200px}}
+@media(prefers-reduced-motion:reduce){.bars div{transition:none}}
+</style>
+</head>
+<body>
+<header class="band">
+  <div class="wrap">
+    <div class="top">
+      <h1>NYC Repertory</h1>
+      <div class="sum" id="sum">Loading screenings…</div>
+    </div>
+  </div>
+</header>
+
+<nav class="bar" aria-label="Filters">
+  <div class="wrap">
+    <div class="days" id="days"></div>
+    <div class="time">
+      <label for="lo">Start time<b id="slotLbl">All hours</b></label>
+      <div class="sl"><div class="track"><div class="fill" id="fill"></div></div>
+        <input id="lo" type="range" aria-label="Earliest start time">
+        <input id="hi" type="range" aria-label="Latest start time"></div>
+    </div>
+    <div class="grp">
+      <div class="dd">
+        <button class="ddb" id="thBtn" aria-expanded="false" aria-controls="thPanel">All theaters</button>
+        <div class="panel" id="thPanel" hidden></div>
+      </div>
+      <div class="grp" id="fmts"></div>
+      <button class="reset" id="reset">Reset</button>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap" id="out"></main>
+
+<footer class="wrap">
+  <p id="upd"></p>
+  <p>Film titles link to the theater's own page for tickets. <sup>OC</sup> = open captions. "Unlisted" means the theater didn't publish a format.</p>
+  <p>Theaters post schedules on their own timing, so later days fill in as they're announced.</p>
+</footer>
+
+<script>
+{
+const MIN = 9 * 60, MAX = 26 * 60, STEP = 15;            // 9am to 2am, 15-minute steps
+const FMTS = [["35mm","35mm","var(--c35)"],["70mm","70mm","var(--c70)"],["16mm","16mm","var(--c16)"],["digital","Digital",""],["unlisted","Unlisted",""]];
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+const norm = m => m < 300 ? m + 1440 : m;              // after-midnight shows sort as late night
+const lab = m => { m = m % 1440; const h = Math.floor(m / 60), mm = m % 60, ap = h < 12 ? "a" : "p", h12 = h % 12 || 12; return h12 + (mm ? ":" + String(mm).padStart(2, "0") : "") + ap; };
+const dayName = d => new Date(d + "T12:00:00").toLocaleDateString("en-US", {weekday:"short"});
+const dayNum = d => +d.slice(8);
+const monName = d => new Date(d + "T12:00:00").toLocaleDateString("en-US", {month:"long"});
+
+let DATA, TH = {}, S;
+const fresh = () => ({days: [], theaters: [], fmts: [], lo: MIN, hi: MAX});
+const save = () => { try { localStorage.setItem("nycrep", JSON.stringify(S)); } catch (e) {} };
+const load = () => { try { return Object.assign(fresh(), JSON.parse(localStorage.getItem("nycrep") || "{}")); } catch (e) { return fresh(); } };
+
+function timeOK(m) { if (!slotSet()) return true; m = norm(m); return m >= S.lo && m <= S.hi; }
+const slotSet = () => S.lo > MIN || S.hi < MAX;
+
+// screenings passing every filter except time 
+function base() {
+  return DATA.screenings.filter(r =>
+    (!S.days.length || S.days.includes(r.d)) &&
+    (!S.theaters.length || S.theaters.includes(r.t)) &&
+    (!S.fmts.length || S.fmts.includes(r.fc)));
+}
+
+function drawSlot() {
+  $("lo").value = S.lo; $("hi").value = S.hi;
+  const span = MAX - MIN;
+  $("fill").style.left = ((S.lo - MIN) / span * 100) + "%";
+  $("fill").style.right = ((MAX - S.hi) / span * 100) + "%";
+  $("slotLbl").textContent = slotSet() ? `${lab(S.lo)} – ${lab(S.hi)}` : "All hours";
+}
+
+function drawFilters() {
+  const dates = [...new Set(DATA.screenings.map(r => r.d))].sort();
+  $("days").innerHTML = `<button class="chip all" data-d="" aria-pressed="${!S.days.length}">All dates</button>` +
+    dates.map(d => `<button class="chip" data-d="${d}" aria-pressed="${S.days.includes(d)}"><small>${dayName(d)}</small><b>${dayNum(d)}</b></button>`).join("");
+  const counts = {}; DATA.screenings.forEach(r => counts[r.t] = (counts[r.t] || 0) + Math.max(1, r.times.length));
+  $("thPanel").innerHTML = DATA.theaters.map(t => `<label><input type="checkbox" value="${t.id}" ${!S.theaters.length || S.theaters.includes(t.id) ? "checked" : ""}>${esc(t.name)}<small>${counts[t.id] || 0}</small></label>`).join("") +
+    `<div class="acts"><button data-a="all">Select all</button><button data-a="none">Clear</button></div>`;
+  $("thBtn").textContent = !S.theaters.length ? "All theaters" : S.theaters.length === 1 ? TH[S.theaters[0]].name : `${S.theaters.length} theaters`;
+  $("fmts").innerHTML = FMTS.map(([k, l, c]) => `<button class="fmt" data-f="${k}" aria-pressed="${S.fmts.includes(k)}"><i style="${c ? "background:" + c : ""}"></i>${l}</button>`).join("");
+}
+
+function drawList() {
+  const rows = base();
+  const vis = rows.map(r => ({...r, show: r.times.filter(([m]) => timeOK(m))}))
+                  .filter(r => r.times.length ? r.show.length : !slotSet());
+  const byDay = {};
+  vis.forEach(r => ((byDay[r.d] ||= {})[r.t] ||= []).push(r));
+  const closedBy = {}; DATA.closed.forEach(c => ((closedBy[c.date] ||= {})[c.theater] = c.note));
+  const days = Object.keys(byDay).sort();
+  const total = vis.reduce((a, r) => a + Math.max(1, r.show.length), 0);
+  const nTh = new Set(vis.map(r => r.t)).size;
+  $("sum").innerHTML = `<b>${total.toLocaleString()}</b> screenings · <b>${nTh}</b> theater${nTh === 1 ? "" : "s"} · <b>${days.length}</b> day${days.length === 1 ? "" : "s"}`;
+  if (!days.length) {
+    $("out").innerHTML = `<div class="empty"><b>Nothing showing</b>No screenings match these filters. Try a wider time slot or more theaters.</div>`;
+    return;
+  }
+  const order = DATA.theaters.map(t => t.id);
+  $("out").innerHTML = days.map(d => {
+    const ths = order.filter(t => byDay[d][t] || (closedBy[d]?.[t] && (!S.theaters.length || S.theaters.includes(t))));
+    return `<section class="day" id="d${d}">
+      <div class="dh"><div class="wd">${new Date(d + "T12:00:00").toLocaleDateString("en-US", {weekday:"long"})}</div><div class="n">${dayNum(d)}</div><div class="m">${monName(d)}</div></div>
+      <div class="ths">${ths.map(t => {
+        const th = TH[t], films = (byDay[d][t] || []).sort((a, b) => (a.show[0] ? norm(a.show[0][0]) : 9999) - (b.show[0] ? norm(b.show[0][0]) : 9999));
+        const body = closedBy[d]?.[t] && !films.length ? `<div class="closed">${esc(closedBy[d][t])}</div>` : films.map(f => {
+          const cls = {"35mm":"f35","70mm":"f70","16mm":"f16"}[f.fc] || "";
+          const tm = f.times.length ? f.show.map(([m, l, tag]) => `<span>${esc(lab(m))}${tag ? `<sup>${esc(tag)}</sup>` : ""}</span>`).join("") : `<em>Times on theater site</em>`;
+          return `<div class="film"><a class="ft" href="${esc(f.url)}" target="_blank" rel="noopener">${esc(f.title)}</a>${f.fmt ? `<span class="tag ${cls}">${esc(f.fmt)}</span>` : ""}${f.note ? `<div class="note">${esc(f.note)}</div>` : ""}<div class="times">${tm}</div></div>`;
+        }).join("");
+        const st = (DATA.stale || {})[t];
+        const staleNote = st ? `<div class="stale">This theater's schedule couldn't be refreshed${st.since ? " since " + esc(new Date(st.since).toLocaleDateString("en-US", {month:"short", day:"numeric"})) : ""}; check its site for changes.</div>` : "";
+        return `<article class="th"><h3><a href="${esc(th.url)}" target="_blank" rel="noopener">${esc(th.name)}</a><span>${esc(th.area)}</span></h3>${staleNote}${body}</article>`;
+      }).join("")}</div></section>`;
+  }).join("");
+}
+
+function render() { drawFilters(); drawSlot(); drawList(); save(); }
+
+function bind() {
+  ["lo", "hi"].forEach(id => { const el = $(id); el.min = MIN; el.max = MAX; el.step = STEP; });
+  const onRange = () => { let lo = +$("lo").value, hi = +$("hi").value; if (lo > hi - STEP) { if (document.activeElement === $("lo")) lo = hi - STEP; else hi = lo + STEP; } S.lo = Math.max(MIN, lo); S.hi = Math.min(MAX, hi); drawSlot(); drawList(); };
+  $("lo").addEventListener("input", onRange); $("hi").addEventListener("input", onRange);
+  $("lo").addEventListener("change", save); $("hi").addEventListener("change", save);
+  $("days").addEventListener("click", e => { const b = e.target.closest(".chip"); if (!b) return; const d = b.dataset.d; if (!d) S.days = []; else S.days = S.days.includes(d) ? S.days.filter(x => x !== d) : [...S.days, d].sort(); render(); });
+  $("fmts").addEventListener("click", e => { const b = e.target.closest(".fmt"); if (!b) return; const f = b.dataset.f; S.fmts = S.fmts.includes(f) ? S.fmts.filter(x => x !== f) : [...S.fmts, f]; render(); });
+  $("thBtn").addEventListener("click", () => { const p = $("thPanel"); p.hidden = !p.hidden; $("thBtn").setAttribute("aria-expanded", !p.hidden); });
+  document.addEventListener("click", e => { if (!e.target.closest(".dd")) { $("thPanel").hidden = true; $("thBtn").setAttribute("aria-expanded", "false"); } });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") { $("thPanel").hidden = true; $("thBtn").setAttribute("aria-expanded", "false"); } });
+  $("thPanel").addEventListener("change", () => { const on = [...$("thPanel").querySelectorAll("input:checked")].map(i => i.value); S.theaters = on.length === DATA.theaters.length ? [] : on; drawList(); save(); $("thBtn").textContent = !S.theaters.length ? "All theaters" : S.theaters.length === 1 ? TH[S.theaters[0]].name : `${S.theaters.length} theaters`; });
+  $("thPanel").addEventListener("click", e => { const a = e.target.closest("[data-a]"); if (!a) return; $("thPanel").querySelectorAll("input").forEach(i => i.checked = a.dataset.a === "all"); S.theaters = a.dataset.a === "all" ? [] : ["__none"]; drawList(); save(); $("thBtn").textContent = a.dataset.a === "all" ? "All theaters" : "No theaters"; });
+  $("reset").addEventListener("click", () => { S = fresh(); render(); });
+}
+
+fetch("data.json?v=" + Date.now()).then(r => r.json()).then(d => {
+  DATA = d; d.theaters.forEach(t => TH[t.id] = t);
+  S = load(); S.lo = MIN; S.hi = MAX;
+  const valid = new Set(d.screenings.map(r => r.d));
+  S.days = S.days.filter(x => valid.has(x));
+  const when = new Date(d.updated);
+  $("upd").textContent = `Schedules updated ${when.toLocaleString("en-US", {weekday:"short", month:"short", day:"numeric", hour:"numeric", minute:"2-digit"})} from ${d.theaters.length} theater websites.`;
+  bind(); render();
+}).catch(() => { $("out").innerHTML = `<div class="empty"><b>Couldn't load schedules</b>Refresh the page to try again.</div>`; $("sum").textContent = ""; });
+}
+</script>
+</body>
+</html>
