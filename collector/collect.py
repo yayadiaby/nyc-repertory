@@ -18,7 +18,7 @@ import traceback
 from collections import defaultdict
 from pathlib import Path
 
-from common import NY, THEATERS, Window, format_category, get, time_label
+from common import NY, THEATERS, UA, Window, format_category, get, time_label
 from sources import SOURCES
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -84,7 +84,7 @@ def main():
     from playwright.sync_api import sync_playwright
     with sync_playwright() as pw:
         browser = pw.chromium.launch()
-        ctx = browser.new_context(user_agent=None, locale="en-US", timezone_id="America/New_York",
+        ctx = browser.new_context(user_agent=UA, locale="en-US", timezone_id="America/New_York",
                                   viewport={"width": 1280, "height": 1000})
         for tid in only:
             name = THEATERS[tid][0]

@@ -399,9 +399,22 @@ def _moma_format(hits):
 
 def moma(w: Window, ctx):
     page = ctx.new_page()
-    page.goto("https://www.moma.org/calendar/?happening_filter=Films&locale=en&location=both",
-              wait_until="domcontentloaded", timeout=60000)
-    page.wait_for_timeout(3000)
+    url = "https://www.moma.org/calendar/?happening_filter=Films&locale=en&location=both"
+    found = False
+    for attempt in range(2):
+        page.goto(url, wait_until="domcontentloaded", timeout=60000)
+        try:
+            page.wait_for_selector('a[href*="/calendar/events/"]', timeout=30000)
+            found = True
+            break
+        except Exception:  # noqa: BLE001
+            page.wait_for_timeout(5000)
+    if not found:
+        title = page.title()
+        snippet = re.sub(r"\s+", " ", page.inner_text("body"))[:160]
+        page.close()
+        raise RuntimeError(f"calendar never loaded (page title: {title!r}; page starts: {snippet!r})")
+    page.wait_for_timeout(1500)
     rows = page.evaluate(MOMA_JS, w.end.isoformat())
     parsed, ids = [], set()
     for r in rows:
