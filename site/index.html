@@ -24,6 +24,43 @@ a{color:inherit}
 button{font:inherit;color:inherit}
 .wrap{max-width:1240px;margin:0 auto;padding:0 max(4vw,16px)}
 .band{background:var(--red);color:#fff;padding:22px 0 20px}
+.nav{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:14px}
+.tab{background:transparent;border:1px solid rgba(255,255,255,.5);color:#fff;border-radius:999px;padding:7px 15px;font-size:14px;font-weight:600;cursor:pointer;min-height:38px}
+.tab[aria-current=page]{background:#fff;color:var(--red2);border-color:#fff}
+.tab b{display:inline-block;min-width:20px;margin-left:4px;padding:0 6px;border-radius:999px;background:rgba(255,255,255,.25);font-size:12px}
+.tab[aria-current=page] b{background:var(--red);color:#fff}
+.acct{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:14px}
+.acct button{background:#fff;color:var(--red2);border:0;border-radius:999px;padding:8px 15px;font-weight:600;font-size:14px;cursor:pointer;min-height:38px}
+.acct button.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.5)}
+.acct img{width:28px;height:28px;border-radius:50%}
+.want{padding-top:28px;padding-bottom:50px}
+.want[hidden],.bar[hidden],#out[hidden]{display:none}
+.wgrid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:28px;align-items:start}
+.cal{background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:16px}
+.calh{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.calh h2{margin:0;font:800 30px/1 "Big Shoulders Display",sans-serif;text-transform:uppercase}
+.calh button{border:1px solid var(--rule);background:var(--bg);border-radius:10px;width:44px;height:44px;font-size:20px;cursor:pointer}
+.cg{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.cg .wk{font-size:12px;color:var(--mute);text-align:center;padding:4px 0;font-weight:600}
+.cd{aspect-ratio:1/1;min-height:44px;border:1px solid var(--rule);background:var(--bg);border-radius:10px;padding:6px;text-align:left;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;font-variant-numeric:tabular-nums}
+.cd .dn{font-weight:600;font-size:15px}
+.cd .ct{font-size:11px;font-weight:700;color:var(--red)}
+.cd.blank{visibility:hidden}
+.cd.past{opacity:.45}
+.cd.today{border-color:var(--ink);border-width:2px}
+.cd.has{background:color-mix(in srgb,var(--red) 14%,var(--bg));border-color:color-mix(in srgb,var(--red) 45%,var(--bg))}
+.cd[aria-pressed=true]{background:var(--red);border-color:var(--red);color:#fff}
+.cd[aria-pressed=true] .ct{color:#fff}
+.wl h3{margin:0 0 12px;font:800 30px/1 "Big Shoulders Display",sans-serif;text-transform:uppercase}
+.wl h3 small{display:block;font:500 14px Archivo,sans-serif;color:var(--mute);text-transform:none;margin-top:6px}
+.bk{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:12px;align-items:start;padding:12px 0;border-top:1px solid var(--rule)}
+.bk .bt{font:800 26px/1 "Big Shoulders Display",sans-serif;font-variant-numeric:tabular-nums}
+.bk .bth{font-size:13px;color:var(--mute);margin-top:3px}
+.bk .gone{font-size:13px;color:var(--c35);margin-top:4px}
+.bk .rm{border:1px solid var(--rule);background:var(--bg);border-radius:8px;padding:6px 10px;font-size:13px;cursor:pointer;min-height:36px}
+.hint{font-size:14px;color:var(--mute);margin:10px 0 0}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;z-index:20;box-shadow:0 8px 24px -8px rgba(0,0,0,.5)}
+.toast[hidden]{display:none}
 .top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:8px 24px}
 h1{font:800 clamp(40px,6vw,64px)/.95 "Big Shoulders Display",Impact,sans-serif;letter-spacing:.01em;margin:0;text-transform:uppercase}
 .sum{font-size:15px;opacity:.92;text-align:right}
@@ -86,9 +123,19 @@ main{padding-bottom:40px}
 .tag.f35{background:var(--c35);color:var(--bg)}
 .tag.f70{background:var(--c70);color:var(--bg)}
 .tag.f16{background:var(--c16);color:var(--bg)}
+.run{display:inline-block;font-size:11px;font-weight:600;color:var(--mute);border:1px solid var(--rule);border-radius:999px;padding:1px 7px;margin-left:6px;vertical-align:2px;white-space:nowrap}
+.run.last{color:var(--c35);border-color:currentColor}
 .note{font-size:13px;color:var(--mute);margin-top:2px}
 .times{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
 .times span{font-size:14px;font-weight:500;background:var(--pill);border-radius:6px;padding:3px 8px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.tb{display:inline-flex;align-items:center;gap:5px;font-size:14px;font-weight:500;background:var(--pill);border:1px solid transparent;border-radius:6px;padding:4px 9px 4px 7px;white-space:nowrap;font-variant-numeric:tabular-nums;cursor:pointer;min-height:32px}
+.tb svg{width:12px;height:14px;flex:none;fill:none;stroke:var(--mute);stroke-width:2}
+.tb:hover{border-color:var(--red)}
+.tb:hover svg{stroke:var(--red)}
+.tb[aria-pressed=true]{background:var(--red);color:#fff}
+.tb[aria-pressed=true] svg{fill:#fff;stroke:#fff}
+.tb[aria-pressed=true] sup{color:#fff}
+.tb:focus-visible{outline:3px solid var(--c70);outline-offset:1px}
 .times sup{font-size:10px;color:var(--mute);margin-left:2px}
 .times em{font-size:13px;color:var(--mute)}
 .stale{font-size:13px;color:var(--c35);margin:2px 0 6px}
@@ -97,7 +144,7 @@ main{padding-bottom:40px}
 .empty b{display:block;font:800 34px "Big Shoulders Display",sans-serif;color:var(--ink);text-transform:uppercase}
 footer{border-top:1px solid var(--rule);padding:22px 0 40px;font-size:14px;color:var(--mute)}
 footer p{margin:4px 0;max-width:75ch}
-@media(max-width:760px){.bar{position:static;box-shadow:none}.grp{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;width:100%}.fmt,.ddb,.reset{flex:none}.panel{position:fixed;left:16px;right:16px;top:auto;width:auto;max-height:70vh;overflow:auto}.dh{top:0}.day{grid-template-columns:1fr;gap:12px}.dh{position:static;display:flex;align-items:baseline;gap:10px}.dh .n{font-size:48px}.sum{text-align:left}html{scroll-padding-top:200px}}
+@media(max-width:760px){.wgrid{grid-template-columns:1fr}.acct{margin-left:0;width:100%}.cd{padding:4px}.cd .ct{font-size:10px}.bar{position:static;box-shadow:none}.grp{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;width:100%}.fmt,.ddb,.reset{flex:none}.panel{position:fixed;left:16px;right:16px;top:auto;width:auto;max-height:70vh;overflow:auto}.dh{top:0}.day{grid-template-columns:1fr;gap:12px}.dh{position:static;display:flex;align-items:baseline;gap:10px}.dh .n{font-size:48px}.sum{text-align:left}html{scroll-padding-top:200px}}
 @media(prefers-reduced-motion:reduce){.bars div{transition:none}}
 </style>
 </head>
@@ -108,10 +155,15 @@ footer p{margin:4px 0;max-width:75ch}
       <h1>NYC Repertory</h1>
       <div class="sum" id="sum">Loading screenings…</div>
     </div>
+    <div class="nav">
+      <button class="tab" id="tabSched" aria-current="page">Schedule</button>
+      <button class="tab" id="tabWant">Want to see<b id="wantCount">0</b></button>
+      <div class="acct" id="acct"></div>
+    </div>
   </div>
 </header>
 
-<nav class="bar" aria-label="Filters">
+<nav class="bar" id="bar" aria-label="Filters">
   <div class="wrap">
     <div class="days" id="days"></div>
     <div class="time">
@@ -133,6 +185,18 @@ footer p{margin:4px 0;max-width:75ch}
 
 <main class="wrap" id="out"></main>
 
+<section class="wrap want" id="want" hidden aria-label="Want to see">
+  <div class="wgrid">
+    <div class="cal">
+      <div class="calh"><button id="calPrev" aria-label="Previous month">‹</button><h2 id="calTitle"></h2><button id="calNext" aria-label="Next month">›</button></div>
+      <div class="cg" id="calGrid"></div>
+      <p class="hint" id="calHint"></p>
+    </div>
+    <div class="wl" id="wantList"></div>
+  </div>
+</section>
+<div class="toast" id="toast" role="status" hidden></div>
+
 <footer class="wrap">
   <p id="upd"></p>
   <p>Film titles link to the theater's own page for tickets. <sup>OC</sup> = open captions. "Unlisted" means the theater didn't publish a format.</p>
@@ -151,7 +215,11 @@ const dayName = d => new Date(d + "T12:00:00").toLocaleDateString("en-US", {week
 const dayNum = d => +d.slice(8);
 const monName = d => new Date(d + "T12:00:00").toLocaleDateString("en-US", {month:"long"});
 
-let DATA, TH = {}, S;
+let DATA, TH = {}, S, RUNS = new Map();
+const nyToday = () => new Date().toLocaleDateString("en-CA", {timeZone: "America/New_York"});
+const addDays = (iso, n) => { const d = new Date(iso + "T12:00:00"); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); };
+const filmKey = r => r.t + "|" + r.title.toLowerCase().replace(/\(open caption(ing|s)?\)|\bin (35|70)mm\b/g, "").replace(/[^a-z0-9]+/g, " ").trim();
+const shortDate = d => new Date(d + "T12:00:00").toLocaleDateString("en-US", {month: "short", day: "numeric"});
 const fresh = () => ({days: [], theaters: [], fmts: [], lo: MIN, hi: MAX});
 const save = () => { try { localStorage.setItem("nycrep", JSON.stringify(S)); } catch (e) {} };
 const load = () => { try { return Object.assign(fresh(), JSON.parse(localStorage.getItem("nycrep") || "{}")); } catch (e) { return fresh(); } };
@@ -210,8 +278,12 @@ function drawList() {
         const th = TH[t], films = (byDay[d][t] || []).sort((a, b) => (a.show[0] ? norm(a.show[0][0]) : 9999) - (b.show[0] ? norm(b.show[0][0]) : 9999));
         const body = closedBy[d]?.[t] && !films.length ? `<div class="closed">${esc(closedBy[d][t])}</div>` : films.map(f => {
           const cls = {"35mm":"f35","70mm":"f70","16mm":"f16"}[f.fc] || "";
-          const tm = f.times.length ? f.show.map(([m, l, tag]) => `<span>${esc(lab(m))}${tag ? `<sup>${esc(tag)}</sup>` : ""}</span>`).join("") : `<em>Times on theater site</em>`;
-          return `<div class="film"><a class="ft" href="${esc(f.url)}" target="_blank" rel="noopener">${esc(f.title)}</a>${f.fmt ? `<span class="tag ${cls}">${esc(f.fmt)}</span>` : ""}${f.note ? `<div class="note">${esc(f.note)}</div>` : ""}<div class="times">${tm}</div></div>`;
+          const tm = f.times.length ? f.show.map(([m, l, tag]) => timeButton(f, m, tag)).join("") : `<em>Times on theater site</em>`;
+          const days = [...(RUNS.get(filmKey(f)) || [])].sort();
+          const run = days.length < 2 ? "" : f.d === days[days.length - 1]
+            ? `<span class="run last" title="Also on ${days.slice(0, -1).map(shortDate).join(", ")}">Last of ${days.length} days</span>`
+            : `<span class="run" title="Playing ${days.map(shortDate).join(", ")}">${days.length} days · thru ${shortDate(days[days.length - 1])}</span>`;
+          return `<div class="film"><a class="ft" href="${esc(f.url)}" target="_blank" rel="noopener">${esc(f.title)}</a>${f.fmt ? `<span class="tag ${cls}">${esc(f.fmt)}</span>` : ""}${run}${f.note ? `<div class="note">${esc(f.note)}</div>` : ""}<div class="times">${tm}</div></div>`;
         }).join("");
         const st = (DATA.stale || {})[t];
         const staleNote = st ? `<div class="stale">This theater's schedule couldn't be refreshed${st.since ? " since " + esc(new Date(st.since).toLocaleDateString("en-US", {month:"short", day:"numeric"})) : ""}; check its site for changes.</div>` : "";
@@ -220,7 +292,171 @@ function drawList() {
   }).join("");
 }
 
-function render() { drawFilters(); drawSlot(); drawList(); save(); }
+
+// ================= bookmarks, sign-in, "Want to see" =================
+const FIREBASE = {
+  apiKey: "AIzaSyAxnDvIjyBzAX9BVPLTwmda_M6ZSlzyw8g",
+  authDomain: "nyc-repertory.firebaseapp.com",
+  projectId: "nyc-repertory",
+  storageBucket: "nyc-repertory.firebasestorage.app",
+  messagingSenderId: "923322316351",
+  appId: "1:923322316351:web:468dc648d511c7d67aea8a"
+};
+const FB_VER = "10.12.2";
+const ICON = '<svg viewBox="0 0 12 14" aria-hidden="true"><path d="M1.5 1.5h9v11L6 9.6l-4.5 2.9z"/></svg>';
+let BM = new Map(), REF = new Map(), FB = null, USER = null, UNSUB = null, CAL = null, PICK = null;
+const LOCAL_BM = "nycrep-bookmarks";
+const bmId = (r, m) => `${r.t}_${r.d}_${m}_${r.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 60)}`;
+const readLocal = () => { try { return JSON.parse(localStorage.getItem(LOCAL_BM) || "[]"); } catch (e) { return []; } };
+const writeLocal = () => { try { localStorage.setItem(LOCAL_BM, JSON.stringify([...BM.values()])); } catch (e) {} };
+function toast(msg) { const t = $("toast"); t.textContent = msg; t.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => t.hidden = true, 2600); }
+
+function timeButton(r, m, tag) {
+  const id = bmId(r, m), on = BM.has(id);
+  REF.set(id, {r, m, tag});
+  return `<button class="tb" data-b="${esc(id)}" aria-pressed="${on}" title="${on ? "Saved: click to remove" : "Save to Want to see"}">${ICON}${esc(lab(m))}${tag ? `<sup>${esc(tag)}</sup>` : ""}</button>`;
+}
+
+async function toggleBookmark(id) {
+  const ref = REF.get(id);
+  if (BM.has(id)) {
+    BM.delete(id);
+    if (USER) await FB.deleteDoc(FB.doc(FB.db, "users", USER.uid, "bookmarks", id)).catch(() => toast("Couldn't remove; check your connection"));
+    toast("Removed from Want to see");
+  } else if (ref) {
+    const {r, m, tag} = ref;
+    const b = {id, t: r.t, theater: TH[r.t]?.name || r.t, d: r.d, m, tag: tag || "", title: r.title, fmt: r.fmt || "", fc: r.fc || "", note: r.note || "", url: r.url || "", savedAt: new Date().toISOString()};
+    BM.set(id, b);
+    if (USER) await FB.setDoc(FB.doc(FB.db, "users", USER.uid, "bookmarks", id), b).catch(() => toast("Couldn't save; check your connection"));
+    toast(USER ? `Saved ${lab(m)} ${r.title}` : `Saved on this device. Sign in to keep it everywhere`);
+  }
+  if (!USER) writeLocal();
+  refreshBookmarkUI();
+}
+
+function refreshBookmarkUI() {
+  document.querySelectorAll(".tb[data-b]").forEach(b => { const on = BM.has(b.dataset.b); b.setAttribute("aria-pressed", on); b.title = on ? "Saved: click to remove" : "Save to Want to see"; });
+  const today = nyToday();
+  $("wantCount").textContent = [...BM.values()].filter(b => b.d >= today).length;
+  if (!$("want").hidden) drawWant();
+}
+
+// ---------- the month calendar ----------
+function drawWant() {
+  const today = nyToday(), all = [...BM.values()];
+  const byDay = {}; all.forEach(b => (byDay[b.d] ||= []).push(b));
+  if (!CAL) {
+    const next = all.map(b => b.d).filter(d => d >= today).sort()[0];
+    CAL = (next || today).slice(0, 7);
+    PICK = next || today;
+  }
+  const [y, mo] = CAL.split("-").map(Number);
+  const first = new Date(y, mo - 1, 1), days = new Date(y, mo, 0).getDate();
+  $("calTitle").textContent = first.toLocaleDateString("en-US", {month: "long", year: "numeric"});
+  const cells = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(w => `<div class="wk">${w}</div>`);
+  for (let i = 0; i < first.getDay(); i++) cells.push(`<div class="cd blank"></div>`);
+  for (let d = 1; d <= days; d++) {
+    const iso = `${CAL}-${String(d).padStart(2, "0")}`, n = (byDay[iso] || []).length;
+    const cls = ["cd", n ? "has" : "", iso < today ? "past" : "", iso === today ? "today" : ""].join(" ");
+    cells.push(`<button class="${cls}" data-day="${iso}" aria-pressed="${iso === PICK}" aria-label="${new Date(iso + "T12:00:00").toLocaleDateString("en-US", {weekday: "long", month: "long", day: "numeric"})}${n ? `, ${n} saved` : ""}"><span class="dn">${d}</span>${n ? `<span class="ct">${n} saved</span>` : ""}</button>`);
+  }
+  $("calGrid").innerHTML = cells.join("");
+  const upcoming = all.filter(b => b.d >= today).length;
+  $("calHint").textContent = !all.length ? "Nothing saved yet. Tap a showtime on the Schedule to add it here."
+    : `${upcoming} upcoming screening${upcoming === 1 ? "" : "s"} saved${USER ? "" : " on this device. Sign in to keep them on every device"}.`;
+  drawDay(PICK, byDay[PICK] || []);
+}
+
+function drawDay(iso, list) {
+  const nice = new Date(iso + "T12:00:00").toLocaleDateString("en-US", {weekday: "long", month: "long", day: "numeric"});
+  const listed = new Set(), inWindow = DATA.screenings.some(r => r.d === iso);
+  DATA.screenings.filter(r => r.d === iso).forEach(r => r.times.forEach(([m]) => listed.add(bmId(r, m))));
+  list.sort((a, b) => norm(a.m) - norm(b.m));
+  $("wantList").innerHTML = `<h3>${esc(nice)}<small>${list.length ? `${list.length} saved screening${list.length === 1 ? "" : "s"}` : "No saved screenings this day"}</small></h3>` +
+    list.map(b => {
+      const cls = {"35mm":"f35","70mm":"f70","16mm":"f16"}[b.fc] || "";
+      const gone = inWindow && !listed.has(b.id) ? `<div class="gone">No longer listed by the theater; check its site in case the time changed.</div>` : "";
+      return `<div class="bk"><div class="bt">${esc(lab(b.m))}</div>
+        <div><a class="ft" href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.title)}</a>${b.fmt ? `<span class="tag ${cls}">${esc(b.fmt)}</span>` : ""}
+          <div class="bth">${esc(b.theater)}${b.tag ? " · " + esc(b.tag) : ""}${b.note ? " · " + esc(b.note) : ""}</div>${gone}</div>
+        <button class="rm" data-rm="${esc(b.id)}">Remove</button></div>`;
+    }).join("");
+}
+
+function showView() {
+  const want = location.hash === "#want";
+  $("want").hidden = !want; $("out").hidden = want; $("bar").hidden = want;
+  $("tabWant").setAttribute("aria-current", want ? "page" : "false");
+  $("tabSched").setAttribute("aria-current", want ? "false" : "page");
+  if (want) drawWant();
+}
+
+// ---------- sign-in ----------
+function drawAcct() {
+  const a = $("acct");
+  if (!FB) { a.innerHTML = ""; return; }
+  a.innerHTML = USER
+    ? `${USER.photoURL ? `<img src="${esc(USER.photoURL)}" alt="" referrerpolicy="no-referrer">` : ""}<span>${esc(USER.displayName || USER.email || "Signed in")}</span><button class="ghost" id="signOut">Sign out</button>`
+    : `<button id="signIn">Sign in with Google</button>`;
+}
+
+async function initFirebase() {
+  try {
+    const base = `https://www.gstatic.com/firebasejs/${FB_VER}/`;
+    const [app, auth, fs] = await Promise.all([import(base + "firebase-app.js"), import(base + "firebase-auth.js"), import(base + "firebase-firestore.js")]);
+    const fbApp = app.initializeApp(FIREBASE);
+    FB = {...auth, ...fs, auth: auth.getAuth(fbApp), db: fs.getFirestore(fbApp)};
+    FB.onAuthStateChanged(FB.auth, async user => {
+      if (UNSUB) { UNSUB(); UNSUB = null; }
+      USER = user;
+      if (user) {
+        const local = readLocal();
+        if (local.length) {           // move bookmarks made while signed out into the account
+          const batch = FB.writeBatch(FB.db);
+          local.forEach(b => batch.set(FB.doc(FB.db, "users", user.uid, "bookmarks", b.id), b));
+          await batch.commit().then(() => { try { localStorage.removeItem(LOCAL_BM); } catch (e) {} }).catch(() => {});
+        }
+        UNSUB = FB.onSnapshot(FB.collection(FB.db, "users", user.uid, "bookmarks"), snap => {
+          BM = new Map(snap.docs.map(d => [d.id, d.data()]));
+          refreshBookmarkUI();
+        }, () => toast("Couldn't load your saved screenings"));
+      } else {
+        BM = new Map(readLocal().map(b => [b.id, b]));
+        refreshBookmarkUI();
+      }
+      drawAcct();
+    });
+  } catch (e) {
+    FB = null; drawAcct();   // sign-in unavailable; bookmarks still work on this device
+  }
+}
+
+function bindBookmarks() {
+  BM = new Map(readLocal().map(b => [b.id, b]));
+  $("out").addEventListener("click", e => { const b = e.target.closest(".tb[data-b]"); if (b) toggleBookmark(b.dataset.b); });
+  $("tabSched").addEventListener("click", () => { history.replaceState(null, "", location.pathname + location.search); showView(); });
+  $("tabWant").addEventListener("click", () => { location.hash = "want"; });
+  window.addEventListener("hashchange", showView);
+  $("calPrev").addEventListener("click", () => { const [y, m] = CAL.split("-").map(Number); const d = new Date(y, m - 2, 1); CAL = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`; drawWant(); });
+  $("calNext").addEventListener("click", () => { const [y, m] = CAL.split("-").map(Number); const d = new Date(y, m, 1); CAL = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`; drawWant(); });
+  $("calGrid").addEventListener("click", e => { const c = e.target.closest("[data-day]"); if (!c) return; PICK = c.dataset.day; drawWant(); });
+  $("wantList").addEventListener("click", e => { const r = e.target.closest("[data-rm]"); if (!r) return;
+    const id = r.dataset.rm; if (!REF.has(id)) REF.set(id, null); toggleBookmark(id); });
+  $("acct").addEventListener("click", async e => {
+    if (e.target.id === "signOut") { await FB.signOut(FB.auth); toast("Signed out"); return; }
+    if (e.target.id !== "signIn") return;
+    const provider = new FB.GoogleAuthProvider();
+    try { await FB.signInWithPopup(FB.auth, provider); }
+    catch (err) {
+      if (/popup-blocked|operation-not-supported|popup-closed-by-browser/.test(err.code || "")) FB.signInWithRedirect(FB.auth, provider);
+      else if (!/popup-closed-by-user|cancelled-popup-request/.test(err.code || "")) toast("Sign-in didn't work: " + (err.code || "unknown error"));
+    }
+  });
+  refreshBookmarkUI();
+  initFirebase();
+}
+
+function render() { drawFilters(); drawSlot(); drawList(); save(); refreshBookmarkUI(); }
 
 function bind() {
   ["lo", "hi"].forEach(id => { const el = $(id); el.min = MIN; el.max = MAX; el.step = STEP; });
@@ -238,13 +474,17 @@ function bind() {
 }
 
 fetch("data.json?v=" + Date.now()).then(r => r.json()).then(d => {
+  const today = nyToday(), last = addDays(today, 13);
+  d.screenings = d.screenings.filter(r => r.d >= today && r.d <= last);
+  d.closed = (d.closed || []).filter(c => c.date >= today && c.date <= last);
+  d.screenings.forEach(r => { const k = filmKey(r); if (!RUNS.has(k)) RUNS.set(k, new Set()); RUNS.get(k).add(r.d); });
   DATA = d; d.theaters.forEach(t => TH[t.id] = t);
   S = load(); S.lo = MIN; S.hi = MAX;
   const valid = new Set(d.screenings.map(r => r.d));
   S.days = S.days.filter(x => valid.has(x));
   const when = new Date(d.updated);
   $("upd").textContent = `Schedules updated ${when.toLocaleString("en-US", {weekday:"short", month:"short", day:"numeric", hour:"numeric", minute:"2-digit"})} from ${d.theaters.length} theater websites.`;
-  bind(); render();
+  bind(); bindBookmarks(); render(); showView();
 }).catch(() => { $("out").innerHTML = `<div class="empty"><b>Couldn't load schedules</b>Refresh the page to try again.</div>`; $("sum").textContent = ""; });
 }
 </script>
